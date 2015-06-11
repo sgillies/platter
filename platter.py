@@ -529,12 +529,6 @@ class Builder(object):
         venv_path = self.setup_build_venv(venv_src)
         local_python = os.path.join(venv_path, 'bin', 'python')
 
-        self.log.info('Analyzing package')
-        pkginfo = self.describe_package(local_python)
-        with self.log.indented():
-            self.log.info('Name: {}', pkginfo['name'])
-            self.log.info('Version: {}', pkginfo['version'])
-
         scratchpad = self.make_scratchpad('buildbase')
         data_dir = os.path.join(scratchpad, 'data')
         os.makedirs(data_dir)
@@ -545,6 +539,12 @@ class Builder(object):
         if prebuild_script is not None:
             self.run_build_script(scratchpad, venv_path, prebuild_script,
                                   install_script_path)
+
+        self.log.info('Analyzing package')
+        pkginfo = self.describe_package(local_python)
+        with self.log.indented():
+            self.log.info('Name: {}', pkginfo['name'])
+            self.log.info('Version: {}', pkginfo['version'])
 
         self.build_wheels(venv_path, data_dir)
         self.put_meta_info(scratchpad, pkginfo)
