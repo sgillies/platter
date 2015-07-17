@@ -256,13 +256,13 @@ class Builder(object):
                                   stdout=subprocess.PIPE,
                                   stderr=subprocess.PIPE)
             if capture:
-                rv = cl.communicate()[0]
+                rv, err = cl.communicate()
             else:
                 rv = None
                 self.log.process_stream_output(cl)
 
             if cl.wait() != 0:
-                self.log.error('Failed to execute command "%s"' % cmd)
+                self.log.error('Failed to execute command "%s": %s' % (cmd, err))
                 raise click.Abort()
             return rv
 
