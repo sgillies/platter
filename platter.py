@@ -81,10 +81,9 @@ DATA_DIR="$HERE/data"
 # Ensure Python exists
 command -v "$py" &> /dev/null || error "Given python interpreter not found ($py)"
 
-if [ ! -d "$1" ]; then
-  echo 'Setting up virtualenv'
-  "$py" "$DATA_DIR/virtualenv.py" "$1"
-  VIRTUAL_ENV="$(cd "$1"; pwd)"
+echo 'Setting up virtualenv'
+"$py" "$DATA_DIR/virtualenv.py" "$1"
+VIRTUAL_ENV="$(cd "$1"; pwd)"
 
 INSTALL_ARGS=''
 if [ -f "$DATA_DIR/requirements.txt" ]; then
